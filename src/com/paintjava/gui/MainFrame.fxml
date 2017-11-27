@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.paintjava.gui.MainFrame">
+   <children>
+      <VBox layoutX="413.0" layoutY="142.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <ToolBar prefHeight="81.0" prefWidth="1200.0">
+              <items>
+                <Button mnemonicParsing="false" onAction="#onExit" text="Close" />
+                  <Button mnemonicParsing="false" onAction="#onClear" text="Clear" />
+                  <ColorPicker fx:id="color" />
+                  <HBox alignment="CENTER">
+                     <children>
+                        <Slider fx:id="sldwidth" min="1.0" />
+                        <TextField fx:id="width" alignment="CENTER" prefHeight="31.0" prefWidth="43.0" text="1" />
+                     </children>
+                  </HBox>
+              </items>
+            </ToolBar>
+            <SplitPane dividerPositions="0.21786310517529214">
+              <items>
+                <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="300.0" minHeight="0.0" minWidth="300.0" prefHeight="826.0" prefWidth="300.0">
+                     <children>
+                        <ListView fx:id="list" layoutY="125.0" prefHeight="826.0" prefWidth="257.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                     </children>
+                  </AnchorPane>
+                <AnchorPane maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="835.0" prefWidth="895.0">
+                     <children>
+                        <Canvas fx:id="canvas" height="817.0" layoutX="6.0" width="921.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                     </children>
+                  </AnchorPane>
+              </items>
+            </SplitPane>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
