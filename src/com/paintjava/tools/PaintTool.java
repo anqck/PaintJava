@@ -7,7 +7,8 @@ public enum PaintTool {
     SPRAY,
     ERASER,
     BRUSH,
-    DRAG;
+    DRAG,
+	BOUDINGTOOL;
     
     public static BasicTool getBasicTool(PaintTool t, Canvas canvas) {
         switch(t){
@@ -21,6 +22,8 @@ public enum PaintTool {
         //        return new Brush(canvas);
             case DRAG:
         //        return new Drag(canvas);
+            case BOUDINGTOOL:
+            	return new BoudingTool(canvas);
             default:
                 return null;
         }

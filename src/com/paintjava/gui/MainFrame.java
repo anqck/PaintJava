@@ -25,7 +25,7 @@ public class MainFrame {
 	@FXML
 	public Slider sldwidth;
 	@FXML
-	public ListView list;
+	public ListView listview;
 
 	private MouseController mouseControll;
 	
@@ -44,7 +44,7 @@ public class MainFrame {
 	
 	public void initialize() {
 			onClear();
-			mouseControll=new MouseController(canvas,width,color,sldwidth);
+			mouseControll=new MouseController(canvas,width,color,sldwidth,listview);
 			
 		        
 	}
