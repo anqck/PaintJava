@@ -25,4 +25,15 @@ public class MyRect {
 		p3.Tinhtien(t,r);
 		p4.Tinhtien(t,r);
 	}
+	public void Zoom(float k)
+	{
+		p1.Zoom(k);
+		p2.Zoom(k);
+		p3.Zoom(k);
+		p4.Zoom(k);
+	}
+	public Point Tam()
+	{
+		return p1.trungdiem(p3);
+	}
 }

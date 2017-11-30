@@ -23,6 +23,22 @@ public class Point {
 		x+=r.x-t.x;
 		y+=r.y-t.y;
 	}
+	public void Zoom(float k) {
+		// TODO Auto-generated method stub
+		x*=k;
+		y*=k;
+	}
+	public Point am()
+	{
+		x*=-1;
+		y*=-1;
+		return this;
+	}
+	public Point trungdiem(Point t)
+	{
+		return new Point((this.x+t.x)/2,(this.y+t.y)/2);
+	}
+
 	
 	
 }

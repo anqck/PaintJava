@@ -56,6 +56,7 @@ public class mImage {
 			maxy+=this.width/2;
 			boundingbox= new MyRect(new Point(minx,miny),new Point(maxx,miny),new Point(maxx,maxy),new Point(minx,maxy));
 	}
+	
 	public void Tinhtien(Point t,Point r)
 	{
 		for (Point p : listpoint) {
@@ -64,6 +65,19 @@ public class mImage {
 		boundingbox.Tinhtien(t, r);
 		
 	}
+
+	public void Zoom(float k)
+	{
+		Point oldtam = boundingbox.Tam(); 
+		for (Point p : listpoint) {
+			p.Zoom(k);
+			}
+		boundingbox.Zoom(k);
+		Tinhtien(boundingbox.Tam(),oldtam);
+		
+		
+	}
+	
 	public void add(Point t)
 	{
 		listpoint.add(t);

@@ -250,6 +250,22 @@ public class MouseController implements MouseListener, MouseMotionListener,
 			
 			
 		});
+		canvas.setOnScroll(e->{
+			
+			if(!listlayer.isEmpty())
+			{
+			if(e.getDeltaY()>0)
+			{
+			listlayer.get(curIma).Zoom((float)0.9);
+			}
+			else
+			{
+			listlayer.get(curIma).Zoom((float)1.1);
+			}
+			repaint();
+			}
+			System.out.println(e.getDeltaY());
+		});
 		
 		width.textProperty().addListener((e) -> {
 		    tool.setWidth(Integer.valueOf(width.getText()));
