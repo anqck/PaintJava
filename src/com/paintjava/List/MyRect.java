@@ -18,4 +18,11 @@ public class MyRect {
 			this.p3=phaiduoi;
 			this.p4=traiduoi;
 	}
+	public void Tinhtien(Point t,Point r)
+	{
+		p1.Tinhtien(t,r);
+		p2.Tinhtien(t,r);
+		p3.Tinhtien(t,r);
+		p4.Tinhtien(t,r);
+	}
 }

@@ -6,6 +6,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
@@ -26,8 +27,11 @@ public class MainFrame {
 	public Slider sldwidth;
 	@FXML
 	public ListView listview;
+	@FXML
+	public Button edit;
 
 	private MouseController mouseControll;
+	
 	
 	@FXML
 	public void onClear()
@@ -44,7 +48,7 @@ public class MainFrame {
 	
 	public void initialize() {
 			onClear();
-			mouseControll=new MouseController(canvas,width,color,sldwidth,listview);
+			mouseControll=new MouseController(canvas,width,color,sldwidth,listview,edit);
 			
 		        
 	}

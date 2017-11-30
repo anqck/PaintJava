@@ -13,6 +13,16 @@ public class Point {
 		x=a;
 		y=b;
 	}
+	public void Tinhtien(Point t)
+	{
+		x+=t.x;
+		y+=t.y;
+	}
+	public void Tinhtien(Point t,Point r)
+	{
+		x+=r.x-t.x;
+		y+=r.y-t.y;
+	}
 	
 	
 }

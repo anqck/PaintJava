@@ -1,15 +1,13 @@
 package com.paintjava.devices;
 
 
-import java.awt.Button;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 
 import com.paintjava.tools.BasicTool;
@@ -20,8 +18,11 @@ import com.paintjava.List.mImage;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
@@ -38,114 +39,60 @@ public class MouseController implements MouseListener, MouseMotionListener,
 
 	private Canvas canvas; // view
 	private BasicTool tool; // model
-	private Color toolColor; 
+	public Color toolColor; 
 	private TextField width;
 	private ColorPicker colorpicker;
 	private Slider sldwidth;
 	private mImage mimage ;
 	private List<mImage> listlayer = new ArrayList<>();
 	private ListView listview;
-	private List<mImage> needToVisualize= new ArrayList<>();
+	private Button edit;
+	public boolean allowedit;
 	
-	
-
+	private int curIma;
 	private int xPos;
 	private int yPos;
 	private int buttonIdPressed;
 
-	public MouseController(Canvas canvas,TextField width,ColorPicker picker,Slider sldwidth,ListView listview) {
+	public MouseController (Canvas canvas,TextField width,ColorPicker picker,Slider sldwidth,ListView listview,Button edit) {
 		this.canvas = canvas;
 		this.width = width;
 		this.colorpicker=picker;
 		this.sldwidth=sldwidth;
-		
 		this.listview=listview;
+		this.edit=edit;
+		init();
 		
-		
-		this.colorpicker.setValue(Color.CADETBLUE);
-		
-		
-					
-		tool = new Pen(canvas);
-		tool.setColor(colorpicker.getValue());
-			
-		
-		this.colorpicker.setOnAction(ActionEvent -> {
-			tool.setColor(colorpicker.getValue());	      
-		    });
-		
-		
-		
-		canvas.setOnMousePressed(e->{
-			if (e.getButton()==MouseButton.PRIMARY)
-			{
-				mimage=new mImage();
-				mimage.name(Integer.toString(listlayer.size()+1));
-				
-				xPos = (int)e.getX();
-				yPos = (int)e.getY();
-	            tool.draw(xPos, yPos,xPos , yPos);
-	            mimage.add(new Point(xPos,yPos));
-	            System.out.println("point"+ mimage.size());
-	          	         
-			}
-			
-				
-		});
-		canvas.setOnMouseDragged(e -> {
-			if (e.getButton()==MouseButton.PRIMARY)
-			{
-			   int currentX = (int)e.getX();
-	           int currentY = (int)e.getY();
-	           tool.draw(xPos, yPos,currentX , currentY);
-		         xPos = currentX;
-		         yPos = currentY;
-		         mimage.add(new Point(xPos,yPos));
-		         System.out.println("point"+ mimage.size());
-			}
-        
-       });
-		canvas.setOnMouseReleased(e->{
-			if (e.getButton()==MouseButton.PRIMARY)
-			{	
-								
-				listlayer.add(mimage);
-				System.out.println("layer" + listlayer.size());
-				mimage.setBoundingBox();
-				listviewupdate();
-			}
-			
-			
-		});
-		
-		width.textProperty().addListener((e) -> {
-		    tool.setWidth(Integer.valueOf(width.getText()));
-		    
-		    if(width.getText()!="")
-		    	sldwidth.setValue(Integer.parseInt(width.getText()));
-		    		    	
-		});
-		sldwidth.valueProperty().addListener((e)->{
-			width.setText(Integer.toString((int)sldwidth.getValue()));
-		});
-		listview.setOnMouseClicked(e->{
-			System.out.println("da click chuot"+ listview.getSelectionModel().getSelectedIndex());
-			if(listview.getSelectionModel().getSelectedIndex() !=-1)
-			vebox(listlayer.get(listview.getSelectionModel().getSelectedIndex()));
-		});
-
-
 	}
 	public void listviewupdate()
 	{
 		int i=1;
 		ObservableList<String> items =FXCollections.observableArrayList ();
 		for (mImage img : listlayer) {
-			
 			items.add(img.name);
 		}
 		listview.setItems(items);
 	}
+	public void repaint()
+	{
+
+		GraphicsContext g2 = canvas.getGraphicsContext2D();
+		g2.clearRect(0, 0, canvas.getWidth(),canvas.getHeight());
+		g2.setFill(Color.WHITE);
+		
+		g2.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+		
+		for (mImage mImage : listlayer) {
+				if(mImage.allowShow) 
+					tool.draw(mImage.listpoint,mImage.color,mImage.width);
+				
+				if(mImage.allowBounding)
+					tool.draw(mImage.boundingbox);
+				
+			}
+		}
+		
+	
 	public void vebox(mImage img) {
 		BoudingTool bt= new BoudingTool(canvas);
 		//for (mImage img : listlayer) {
@@ -154,6 +101,7 @@ public class MouseController implements MouseListener, MouseMotionListener,
 		//}
 				 
 	}
+	
 	public BasicTool getTool() {
 		return tool;
 	}
@@ -218,6 +166,156 @@ public class MouseController implements MouseListener, MouseMotionListener,
 		
 	}
 	
-
+//	@FXML public void initialize() {
+//		// TODO Auto-generated method stub
+//		System.out.println("data loanding..............");
+//	}
+	public void init()
+	{
+		this.colorpicker.setValue(Color.CADETBLUE);
+		this.width.setText("3");
+		this.sldwidth.setValue(3);
+		curIma=0;
+		allowedit=false;
+		tool = new Pen(canvas);
+		tool.setColor(colorpicker.getValue());
+		tool.setWidth(Integer.valueOf(width.getText()));
+			
+					
+		
+		canvas.setOnMousePressed(e->{
+			if (e.getButton()==MouseButton.PRIMARY)
+			{
+				mimage=new mImage(tool.getColor(),tool.getWidth());
+				mimage.name(Integer.toString(listlayer.size()+1));
+				
+				xPos = (int)e.getX();
+				yPos = (int)e.getY();
+	            tool.draw(xPos, yPos,xPos, yPos);
+	            mimage.add(new Point(xPos,yPos));
+	            System.out.println("point"+ mimage.size());
+	                     	         
+			}
+			else
+			{
+				xPos = (int)e.getX();
+				yPos = (int)e.getY();
+			}
+			
+			
+				
+		});
+		canvas.setOnMouseDragged(e -> {
+			if (e.getButton()==MouseButton.PRIMARY)
+			{
+			   int currentX = (int)e.getX();
+	           int currentY = (int)e.getY();
+	           tool.draw(xPos, yPos,currentX , currentY);
+		         xPos = currentX;
+		         yPos = currentY;
+		         mimage.add(new Point(xPos,yPos));
+		         System.out.println("point"+ mimage.size());
+			}
+			else {
+				int a =listview.getSelectionModel().getSelectedIndex();
+				if (a!=-1)
+				{
+					  int currentX = (int)e.getX();
+			           int currentY = (int)e.getY();
+					listlayer.get(a).Tinhtien(new Point(xPos,yPos),new Point(currentX,currentY));
+					
+				 repaint();
+				 xPos = currentX;
+		         yPos = currentY;
+				}
+				
+			};
+        
+       });
+		canvas.setOnMouseReleased(e->{
+			if (e.getButton()==MouseButton.PRIMARY)
+			{	
+								
+				listlayer.add(mimage);
+				System.out.println("layer" + listlayer.size());
+				mimage.setBoundingBox();
+				listviewupdate();
+				
+				curIma=listlayer.size()-1;
+				listview.getSelectionModel().select(curIma);
+				listview.getOnMouseClicked().handle(e);;
+				
+							
+			}
+			
+			
+		});
+		
+		width.textProperty().addListener((e) -> {
+		    tool.setWidth(Integer.valueOf(width.getText()));
+		    if(width.getText()!="")
+		    	sldwidth.setValue(Integer.parseInt(width.getText()));
+		    if(allowedit)
+			{
+		    listlayer.get(listview.getSelectionModel().getSelectedIndex()).width=tool.getWidth();
+		    listlayer.get(listview.getSelectionModel().getSelectedIndex()).setBoundingBox();
+		    repaint();
+			}
+		    		    	
+		});
+		
+		sldwidth.valueProperty().addListener((e)->{
+			width.setText(Integer.toString((int)sldwidth.getValue()));
+		});
+		
+		this.colorpicker.setOnAction(ActionEvent -> {
+			tool.setColor(colorpicker.getValue());	 
+			if(allowedit)
+			{
+			listlayer.get(listview.getSelectionModel().getSelectedIndex()).color=tool.getColor();
+		    repaint();
+			}
+		    });
+		
+		listview.setOnMouseClicked(e->{
+			System.out.println("da click chuot"+ listview.getSelectionModel().getSelectedIndex());
+			if(listview.getSelectionModel().getSelectedIndex() !=-1)
+			{
+//				if(listview.getSelectionModel().getSelectedIndex()!= curIma)
+//				{
+//					listlayer.get(curIma).allowBounding=false;
+//					listlayer.get(listview.getSelectionModel().getSelectedIndex()).allowBounding=true;
+//					curIma=listview.getSelectionModel().getSelectedIndex();
+//				}
+//				else
+//				{listlayer.get(listview.getSelectionModel().getSelectedIndex()).allowBounding=true;}
+			
+				curIma=listview.getSelectionModel().getSelectedIndex();
+				for (int i = 0; i < listlayer.size(); i++) {
+					if(i!=curIma)
+					{
+						listlayer.get(i).allowBounding=false;
+					}
+				}
+				listlayer.get(curIma).allowBounding=true;
+			}
+			repaint();
+			//listlayer.get(listview.getSelectionModel().getSelectedIndex()).allowBounding=false;
+		});
+		edit.setOnAction(e->{
+			
+			if(!allowedit)
+			{
+				edit.setText("Edit:ON");
+				allowedit=true;
+			}
+			else
+			{
+				edit.setText("Edit:OFF");
+				allowedit=false;
+			}
+		});
+	}
+	
 
 }
