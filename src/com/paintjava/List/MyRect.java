@@ -1,11 +1,17 @@
 package com.paintjava.List;
 
+import com.sun.javafx.geom.Rectangle;
+
 public class MyRect {
 	//theo kim dong ho 
 	public Point p1; //(x;y)
 	public Point p2; //(X;y)
 	public Point p3; //(X;Y)
 	public Point p4; //(x;Y)
+	public Rectangle neo1;
+	public Rectangle neo2;
+	public Rectangle neo3;
+	public Rectangle neo4;
 	
 	public MyRect() {
 	// TODO Auto-generated constructor stub
@@ -17,6 +23,10 @@ public class MyRect {
 			this.p2=phaitren;
 			this.p3=phaiduoi;
 			this.p4=traiduoi;
+			neo1=new Rectangle(p1.x,p1.y,10,10);
+			neo2=new Rectangle(p2.x,p2.y,10,10);
+			neo3=new Rectangle(p3.x,p3.y,10,10);
+			neo4=new Rectangle(p4.x,p4.y,10,10);
 	}
 	public void Tinhtien(Point t,Point r)
 	{
@@ -24,6 +34,10 @@ public class MyRect {
 		p2.Tinhtien(t,r);
 		p3.Tinhtien(t,r);
 		p4.Tinhtien(t,r);
+		neo1=new Rectangle(p1.x,p1.y,10,10);
+		neo2=new Rectangle(p2.x,p2.y,10,10);
+		neo3=new Rectangle(p3.x,p3.y,10,10);
+		neo4=new Rectangle(p4.x,p4.y,10,10);
 	}
 	public void Zoom(float k)
 	{

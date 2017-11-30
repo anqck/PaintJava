@@ -13,6 +13,8 @@ import java.util.List;
 import com.paintjava.tools.BasicTool;
 import com.paintjava.tools.BoudingTool;
 import com.paintjava.tools.Pen;
+import com.sun.javafx.geom.Rectangle;
+import com.paintjava.List.MyRect;
 import com.paintjava.List.Point;
 import com.paintjava.List.mImage;
 
@@ -47,20 +49,23 @@ public class MouseController implements MouseListener, MouseMotionListener,
 	private List<mImage> listlayer = new ArrayList<>();
 	private ListView listview;
 	private Button edit;
+	public Button delete;
 	public boolean allowedit;
+	public boolean allowhandle;
 	
 	private int curIma;
 	private int xPos;
 	private int yPos;
 	private int buttonIdPressed;
 
-	public MouseController (Canvas canvas,TextField width,ColorPicker picker,Slider sldwidth,ListView listview,Button edit) {
+	public MouseController (Canvas canvas,TextField width,ColorPicker picker,Slider sldwidth,ListView listview,Button edit,Button delete) {
 		this.canvas = canvas;
 		this.width = width;
 		this.colorpicker=picker;
 		this.sldwidth=sldwidth;
 		this.listview=listview;
 		this.edit=edit;
+		this.delete=delete;
 		init();
 		
 	}
@@ -177,6 +182,7 @@ public class MouseController implements MouseListener, MouseMotionListener,
 		this.sldwidth.setValue(3);
 		curIma=0;
 		allowedit=false;
+		allowhandle=false;
 		tool = new Pen(canvas);
 		tool.setColor(colorpicker.getValue());
 		tool.setWidth(Integer.valueOf(width.getText()));
@@ -186,6 +192,8 @@ public class MouseController implements MouseListener, MouseMotionListener,
 		canvas.setOnMousePressed(e->{
 			if (e.getButton()==MouseButton.PRIMARY)
 			{
+				if(!allowhandle)
+				{
 				mimage=new mImage(tool.getColor(),tool.getWidth());
 				mimage.name(Integer.toString(listlayer.size()+1));
 				
@@ -194,12 +202,31 @@ public class MouseController implements MouseListener, MouseMotionListener,
 	            tool.draw(xPos, yPos,xPos, yPos);
 	            mimage.add(new Point(xPos,yPos));
 	            System.out.println("point"+ mimage.size());
-	                     	         
+	                        
+				}
+				else
+				{
+					//edithandle
+					xPos = (int)e.getX();
+					yPos = (int)e.getY();
+					
+				}
+	         
+	            	         
 			}
 			else
 			{
 				xPos = (int)e.getX();
 				yPos = (int)e.getY();
+				if(allowhandle)
+				{
+					GraphicsContext g2 = canvas.getGraphicsContext2D();
+            		MyRect rect= listlayer.get(curIma).boundingbox;
+            		g2.fillRect(rect.neo1.x-rect.neo1.width/2,rect.neo1.y-rect.neo1.width/2,rect.neo1.width,rect.neo1.height);
+            		g2.fillRect(rect.neo2.x-rect.neo2.width/2,rect.neo2.y-rect.neo2.width/2,rect.neo2.width,rect.neo2.height);
+            		g2.fillRect(rect.neo3.x-rect.neo3.width/2,rect.neo3.y-rect.neo3.width/2,rect.neo3.width,rect.neo3.height);
+            		g2.fillRect(rect.neo4.x-rect.neo4.width/2,rect.neo4.y-rect.neo4.width/2,rect.neo4.width,rect.neo4.height);
+				}
 			}
 			
 			
@@ -208,13 +235,39 @@ public class MouseController implements MouseListener, MouseMotionListener,
 		canvas.setOnMouseDragged(e -> {
 			if (e.getButton()==MouseButton.PRIMARY)
 			{
-			   int currentX = (int)e.getX();
-	           int currentY = (int)e.getY();
-	           tool.draw(xPos, yPos,currentX , currentY);
-		         xPos = currentX;
-		         yPos = currentY;
-		         mimage.add(new Point(xPos,yPos));
-		         System.out.println("point"+ mimage.size());
+				if(!allowhandle)
+				{
+				   int currentX = (int)e.getX();
+		           int currentY = (int)e.getY();
+		           tool.draw(xPos, yPos,currentX , currentY);
+			         xPos = currentX;
+			         yPos = currentY;
+			         mimage.add(new Point(xPos,yPos));
+			         System.out.println("point"+ mimage.size());
+				}
+				else
+				{
+					//edithandle
+					int currentX = (int)e.getX();
+			        int currentY = (int)e.getY();
+			        float moi=listlayer.get(curIma).boundingbox.Tam().dodai(new Point(currentX,currentY));
+			        float chuan=listlayer.get(curIma).boundingbox.Tam().dodai(listlayer.get(curIma).boundingbox.p1);
+//			        if(moi<chuan)
+//					listlayer.get(curIma).Zoom(moi/chuan);
+//			        else
+			        listlayer.get(curIma).Zoom(moi/chuan);	
+					repaint();
+					GraphicsContext g2 = canvas.getGraphicsContext2D();
+            		MyRect rect= listlayer.get(curIma).boundingbox;
+            		g2.fillRect(rect.neo1.x-rect.neo1.width/2,rect.neo1.y-rect.neo1.width/2,rect.neo1.width,rect.neo1.height);
+            		g2.fillRect(rect.neo2.x-rect.neo2.width/2,rect.neo2.y-rect.neo2.width/2,rect.neo2.width,rect.neo2.height);
+            		g2.fillRect(rect.neo3.x-rect.neo3.width/2,rect.neo3.y-rect.neo3.width/2,rect.neo3.width,rect.neo3.height);
+            		g2.fillRect(rect.neo4.x-rect.neo4.width/2,rect.neo4.y-rect.neo4.width/2,rect.neo4.width,rect.neo4.height);
+										
+					xPos = currentX;
+			         yPos = currentY;
+					
+				}
 			}
 			else {
 				int a =listview.getSelectionModel().getSelectedIndex();
@@ -233,9 +286,11 @@ public class MouseController implements MouseListener, MouseMotionListener,
         
        });
 		canvas.setOnMouseReleased(e->{
+			
 			if (e.getButton()==MouseButton.PRIMARY)
 			{	
-								
+				if(!allowhandle)
+				{				
 				listlayer.add(mimage);
 				System.out.println("layer" + listlayer.size());
 				mimage.setBoundingBox();
@@ -244,10 +299,39 @@ public class MouseController implements MouseListener, MouseMotionListener,
 				curIma=listlayer.size()-1;
 				listview.getSelectionModel().select(curIma);
 				listview.getOnMouseClicked().handle(e);;
-				
-							
+				}
+				else
+				{
+					//edithandle
+					allowhandle=false;
+					repaint();
+				}
 			}
 			
+			
+			
+		});
+		canvas.setOnMouseMoved(e->{
+			//System.out.println(e.getX());
+			if(listlayer.size()!=0)
+            {
+            	if(listlayer.get(curIma).boundingbox.neo1.contains((int)e.getX(),(int) e.getY()) 
+            			||listlayer.get(curIma).boundingbox.neo2.contains((int)e.getX(),(int) e.getY())
+            			||listlayer.get(curIma).boundingbox.neo3.contains((int)e.getX(),(int) e.getY())
+            			||listlayer.get(curIma).boundingbox.neo4.contains((int)e.getX(),(int) e.getY()))
+            	{
+            		System.out.println("cho phep edit");
+            		allowhandle=true;
+            		GraphicsContext g2 = canvas.getGraphicsContext2D();
+            		MyRect rect= listlayer.get(curIma).boundingbox;
+            		g2.fillRect(rect.neo1.x-rect.neo1.width/2,rect.neo1.y-rect.neo1.width/2,rect.neo1.width,rect.neo1.height);
+            		g2.fillRect(rect.neo2.x-rect.neo2.width/2,rect.neo2.y-rect.neo2.width/2,rect.neo2.width,rect.neo2.height);
+            		g2.fillRect(rect.neo3.x-rect.neo3.width/2,rect.neo3.y-rect.neo3.width/2,rect.neo3.width,rect.neo3.height);
+            		g2.fillRect(rect.neo4.x-rect.neo4.width/2,rect.neo4.y-rect.neo4.width/2,rect.neo4.width,rect.neo4.height);
+            		
+            	}
+            
+            }
 			
 		});
 		canvas.setOnScroll(e->{
@@ -331,6 +415,12 @@ public class MouseController implements MouseListener, MouseMotionListener,
 				allowedit=false;
 			}
 		});
+		delete.setOnAction(e->{
+			//listlayer.remove(curIma);
+			listview.getItems().remove(listview.getSelectionModel().getSelectedIndex());
+			
+		});
+		
 	}
 	
 

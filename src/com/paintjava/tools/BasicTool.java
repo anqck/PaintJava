@@ -50,12 +50,25 @@ public abstract class BasicTool {
 	 	g2.setLineCap(StrokeLineCap.ROUND); //lam MIN
 	 	g2.setLineDashes(7);
 	 	
+	 
 	 	g2.strokeLine(rect.p1.x, rect.p1.y, rect. p2.x, rect. p2.y);
 	 	g2.strokeLine(rect.p3.x, rect.p3.y, rect.p2.x, rect.p2.y);
 	 	g2.strokeLine(rect.p3.x, rect.p3.y, rect. p4.x, rect.p4.y);
 	 	g2.strokeLine(rect.p1.x, rect.p1.y, rect.p4.x, rect.p4.y);
-	 	
+		g2.setFill(Color.RED);
 		g2.setLineDashes(null);
+		g2.setLineWidth(3);
+		g2.strokeRect(rect.neo1.x-rect.neo1.width/2,rect.neo1.y-rect.neo1.width/2,rect.neo1.width,rect.neo1.height);
+		g2.strokeRect(rect.neo2.x-rect.neo2.width/2,rect.neo2.y-rect.neo2.width/2,rect.neo2.width,rect.neo2.height);
+		g2.strokeRect(rect.neo3.x-rect.neo3.width/2,rect.neo3.y-rect.neo3.width/2,rect.neo3.width,rect.neo3.height);
+		g2.strokeRect(rect.neo4.x-rect.neo4.width/2,rect.neo4.y-rect.neo4.width/2,rect.neo4.width,rect.neo4.height);
+		//g2.fillOval(rect.p1.x-5, rect.p1.y-5, 10, 10);
+//		g2.fillOval(rect.p2.x-5, rect.p2.y-5, 10, 10);
+//		g2.fillOval(rect.p3.x-5, rect.p3.y-5, 10, 10);
+//		g2.fillOval(rect.p4.x-5, rect.p4.y-5, 10, 10);
+	  
+	 
+	 	
 		
 	}
 	

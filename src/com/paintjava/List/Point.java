@@ -38,6 +38,11 @@ public class Point {
 	{
 		return new Point((this.x+t.x)/2,(this.y+t.y)/2);
 	}
+	public float dodai(Point t)
+	{
+		
+		return (float)Math.sqrt((x-t.x)*(x-t.x)+(y-t.y)*(y-t.y));
+	}
 
 	
 	

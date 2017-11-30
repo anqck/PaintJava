@@ -29,6 +29,8 @@ public class MainFrame {
 	public ListView listview;
 	@FXML
 	public Button edit;
+	@FXML 
+	public Button delete;
 
 	private MouseController mouseControll;
 	
@@ -45,10 +47,12 @@ public class MainFrame {
 	{
 		 Platform.exit();
 	}
+
+	
 	
 	public void initialize() {
 			onClear();
-			mouseControll=new MouseController(canvas,width,color,sldwidth,listview,edit);
+			mouseControll=new MouseController(canvas,width,color,sldwidth,listview,edit,delete);
 			
 		        
 	}
