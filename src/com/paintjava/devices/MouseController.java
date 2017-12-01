@@ -54,8 +54,8 @@ public class MouseController implements MouseListener, MouseMotionListener,
 	public boolean allowhandle;
 	
 	private int curIma;
-	private int xPos;
-	private int yPos;
+	private float xPos;
+	private float yPos;
 	private int buttonIdPressed;
 
 	public MouseController (Canvas canvas,TextField width,ColorPicker picker,Slider sldwidth,ListView listview,Button edit,Button delete) {
@@ -128,14 +128,14 @@ public class MouseController implements MouseListener, MouseMotionListener,
 	
 	@Override
 	public void mousePressed(MouseEvent e) {
-		if (e.getButton() == MouseEvent.BUTTON1) {
-			buttonIdPressed = 1;
-		}
-		xPos = e.getX();
-		yPos = e.getY();
-		if (tool != null && buttonIdPressed == 1) {
-			draw(e);
-		}
+//		if (e.getButton() == MouseEvent.BUTTON1) {
+//			buttonIdPressed = 1;
+//		}
+//		xPos = e.getX();
+//		yPos = e.getY();
+//		if (tool != null && buttonIdPressed == 1) {
+//			draw(e);
+//		}
 		      
 	}
 
@@ -148,17 +148,17 @@ public class MouseController implements MouseListener, MouseMotionListener,
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		if (tool != null && buttonIdPressed == 1) {
-			draw(e);
-		}
-
-		xPos = e.getX();
-		yPos = e.getY();
-	}
-
-    private void draw(MouseEvent e) {
-        tool.setColor(toolColor);
-        tool.draw(xPos, yPos, e.getX(), e.getY());
+//		if (tool != null && buttonIdPressed == 1) {
+//			draw(e);
+//		}
+//
+//		xPos = e.getX();
+//		yPos = e.getY();
+//	}
+//
+//    private void draw(MouseEvent e) {
+//        tool.setColor(toolColor);
+//        tool.draw(xPos, yPos, e.getX(), e.getY());
    }
 
 	@Override
@@ -197,8 +197,8 @@ public class MouseController implements MouseListener, MouseMotionListener,
 				mimage=new mImage(tool.getColor(),tool.getWidth());
 				mimage.name(Integer.toString(listlayer.size()+1));
 				
-				xPos = (int)e.getX();
-				yPos = (int)e.getY();
+				xPos = (float)e.getX();
+				yPos = (float)e.getY();
 	            tool.draw(xPos, yPos,xPos, yPos);
 	            mimage.add(new Point(xPos,yPos));
 	            System.out.println("point"+ mimage.size());
@@ -207,8 +207,8 @@ public class MouseController implements MouseListener, MouseMotionListener,
 				else
 				{
 					//edithandle
-					xPos = (int)e.getX();
-					yPos = (int)e.getY();
+					xPos = (float)e.getX();
+					yPos = (float)e.getY();
 					
 				}
 	         
@@ -216,8 +216,8 @@ public class MouseController implements MouseListener, MouseMotionListener,
 			}
 			else
 			{
-				xPos = (int)e.getX();
-				yPos = (int)e.getY();
+				xPos = (float)e.getX();
+				yPos = (float)e.getY();
 				if(allowhandle)
 				{
 					GraphicsContext g2 = canvas.getGraphicsContext2D();
@@ -237,8 +237,8 @@ public class MouseController implements MouseListener, MouseMotionListener,
 			{
 				if(!allowhandle)
 				{
-				   int currentX = (int)e.getX();
-		           int currentY = (int)e.getY();
+					float currentX = (float)e.getX();
+					float currentY = (float)e.getY();
 		           tool.draw(xPos, yPos,currentX , currentY);
 			         xPos = currentX;
 			         yPos = currentY;
@@ -248,8 +248,8 @@ public class MouseController implements MouseListener, MouseMotionListener,
 				else
 				{
 					//edithandle
-					int currentX = (int)e.getX();
-			        int currentY = (int)e.getY();
+					float currentX = (float)e.getX();
+					float currentY = (float)e.getY();
 			        float moi=listlayer.get(curIma).boundingbox.Tam().dodai(new Point(currentX,currentY));
 			        float chuan=listlayer.get(curIma).boundingbox.Tam().dodai(listlayer.get(curIma).boundingbox.p1);
 //			        if(moi<chuan)
@@ -273,8 +273,8 @@ public class MouseController implements MouseListener, MouseMotionListener,
 				int a =listview.getSelectionModel().getSelectedIndex();
 				if (a!=-1)
 				{
-					  int currentX = (int)e.getX();
-			           int currentY = (int)e.getY();
+					float currentX = (float)e.getX();
+					float currentY = (float)e.getY();
 					listlayer.get(a).Tinhtien(new Point(xPos,yPos),new Point(currentX,currentY));
 					
 				 repaint();
@@ -329,6 +329,11 @@ public class MouseController implements MouseListener, MouseMotionListener,
             		g2.fillRect(rect.neo3.x-rect.neo3.width/2,rect.neo3.y-rect.neo3.width/2,rect.neo3.width,rect.neo3.height);
             		g2.fillRect(rect.neo4.x-rect.neo4.width/2,rect.neo4.y-rect.neo4.width/2,rect.neo4.width,rect.neo4.height);
             		
+            	}
+            	else
+            	{
+            		allowhandle=false;
+            		repaint();
             	}
             
             }
@@ -417,7 +422,7 @@ public class MouseController implements MouseListener, MouseMotionListener,
 		});
 		delete.setOnAction(e->{
 			//listlayer.remove(curIma);
-			listview.getItems().remove(listview.getSelectionModel().getSelectedIndex());
+		//	listview.getItems().remove(listview.getSelectionModel().getSelectedIndex());
 			
 		});
 		

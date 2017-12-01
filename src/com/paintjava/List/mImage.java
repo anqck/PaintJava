@@ -40,10 +40,10 @@ public class mImage {
 	
 	public void setBoundingBox()
 	{
-			int minx = listpoint.get(0).x;
-			int miny = listpoint.get(0).y;
-			int maxx = listpoint.get(0).x;
-			int maxy = listpoint.get(0).y;
+			float minx = listpoint.get(0).x;
+			float miny = listpoint.get(0).y;
+			float maxx = listpoint.get(0).x;
+			float maxy = listpoint.get(0).y;
 			for (Point _point : listpoint) {
 				if(_point.x<minx) minx=_point.x;
 				if(_point.y<miny) miny=_point.y;

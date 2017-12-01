@@ -25,7 +25,7 @@ public abstract class BasicTool {
 		this.canvas = canvas;
 	}
 
-	public void draw(int xStart, int yStart, int xEnd, int yEnd){
+	public void draw(float xStart, float yStart, float xEnd, float yEnd){
 		useTool(xStart, yStart,xEnd,yEnd);
 		
 	}
@@ -72,7 +72,7 @@ public abstract class BasicTool {
 		
 	}
 	
-	protected abstract void useTool(int xStart, int yStart, int xEnd, int yEnd);
+	protected abstract void useTool(float xStart, float yStart, float xEnd, float yEnd);
 
     public void stopDrawing() {}
 

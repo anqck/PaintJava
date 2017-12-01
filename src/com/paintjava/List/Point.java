@@ -1,18 +1,19 @@
 package com.paintjava.List;
 
 public class Point {
-	public int x;
-	public int y;
+	public float x;
+	public float y;
 
 	public Point() {
 	// TODO Auto-generated constructor stub
 	x=y=0;
 	}
-	public Point(int a,int b) {
+	public Point(float a,float b) {
 		// TODO Auto-generated constructor stub
 		x=a;
 		y=b;
 	}
+
 	public void Tinhtien(Point t)
 	{
 		x+=t.x;

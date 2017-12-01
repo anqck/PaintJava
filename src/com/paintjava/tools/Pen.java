@@ -17,7 +17,7 @@ public class Pen extends BasicTool {
 	}
 
 	@Override
-	public void useTool(int xStart, int yStart, int xEnd, int yEnd) {
+	public void useTool(float xStart, float yStart, float xEnd, float yEnd) {
 		
 		 GraphicsContext g2 = canvas.getGraphicsContext2D();
 		//Graphics2D image = (Graphics2D) canvas.getImage().getGraphics();
